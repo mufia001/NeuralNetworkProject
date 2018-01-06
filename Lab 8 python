@@ -1,0 +1,279 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 24 10:38:23 2017
+
+@author: Muhammad Fiaz
+"""
+import numpy as np
+
+#Question no.1 (two pages links to each othe A and B)
+equalnumberofpages=np.array([1/2,1/2]) #where 2 is equal for A and B.
+adjacentmatrix=np.array([[0,1],[1,0]]) #where [0,1] in 0 is for link between A
+# and 1 is for A links to B while [1,0] where 1 is a link for B to A and 0 is for B to B
+ 
+
+def iterations():
+    currentestimate=equalnumberofpages
+    for i in range(20): #we can change the range(40) to compute the 40th iteration. I already did that and the answer is [0.5 0.5].
+      currentestimate=np.dot(adjacentmatrix,currentestimate)
+    return currentestimate
+    
+    
+iterations()
+print("iterations without damping",iterations())  
+#Now we have to find the eigen vector for eigen value 1. 
+eigenvalues,eigenvectors=np.linalg.eig(adjacentmatrix)
+print("eigenvalues",eigenvalues)
+print("eigenvectors",eigenvectors)
+#So my eigenvectors for eigenvalue 1 is [0.70710678 0.70710678] which is pretty closer tO 20th and 40th iteration without damping  which was [0.5 0.5]. 
+E=np.array([[1,1],[1,1]])
+N=2 #number of pages
+d = 0.85
+
+
+dampingmatrix=np.array(((1-d)*E/N)+adjacentmatrix)
+pagerankwithdamping=np.dot(dampingmatrix,equalnumberofpages)
+
+def iterationswithdamping():
+      currentestimateofdamping=equalnumberofpages
+      for i in range(20): # We can change the range(40) to compute the 40th iteration. I already did that and the answer is [133.93177312 133.93177312].
+          currentestimateofdamping=np.dot(dampingmatrix,currentestimateofdamping)
+      return currentestimateofdamping
+iterationswithdamping()
+print("iterationswithdamping",iterationswithdamping())  
+eigenvalueswithdamping,eigenvectorswithdamping=np.linalg.eig(dampingmatrix) 
+print("eigenvalueswithdamping",eigenvalueswithdamping) 
+print("eigenvectorswithdamping",eigenvectorswithdamping)
+#My eigenvectorswithdamping values are similar to the eigenvectorswithoutdamping but the values after 20th iteration is [8.1832687 8.1832687] and for 40th iterations,
+#it is 133.93 which is far apart from the values that we got from eigenvectorswithdamping.
+
+
+
+
+
+
+
+#Question2 (Twopages A and B, with A linking to B only)
+equalnumberofpages2=np.array([1/2,1/2])
+adjacentmatrix2=np.array([[0,0],[1,0]])
+
+def iterations2(t):
+    currentestimate2=equalnumberofpages2
+    for i in range(t):
+        currentestimate2=np.dot(adjacentmatrix2,currentestimate2)
+    return currentestimate2
+iterations2(20)
+print("20 iterations for second question without damping",iterations2(20))
+iterations2(40)
+print("40 iterations for second question without damping",iterations2(40))
+eigenvalues2,eigenvectors2=np.linalg.eig(adjacentmatrix2)
+print("eigenvalues for second question without damping",eigenvalues2)
+#so we are not getting the eigen value 1 because it's just a pathway towards one page.
+print("eigenvectors for second question without damping",eigenvectors2)
+E=np.array([[1,1],[1,1]])
+numberofpages=2
+d2=0.85
+dampingmatrix2=np.array(((1-d)*E/numberofpages)+np.dot(d2,adjacentmatrix2))
+
+def iterationswithdamping2(t):
+    currentestimateofdamping2=equalnumberofpages2
+    for i in range(t):
+        currentestimateofdamping2=np.dot(dampingmatrix2,currentestimateofdamping2)
+    return currentestimateofdamping2
+iterationswithdamping2(20)
+print("20 iterations for second question with damping",iterationswithdamping2(20))
+iterationswithdamping2(40)
+print("40 iterations for second questions with damping", iterationswithdamping2(40))
+eigenvalueswithdamping2,eigenvectorswithdamping2=np.linalg.eig(dampingmatrix2)
+#We are not getting the eigen value 1 because it's just a pathway towards one page i.e. A links to B only
+print("eigen values with damping for second question",eigenvalueswithdamping2)
+print("eigen vectors with damping for second question",eigenvectorswithdamping2)
+#For this question, we don't have the eigenvalue of 1 so we can't really explain the patterns 
+#because it's just a pathway towards one page.
+
+
+
+
+
+
+#Question3 (Four pages A,B,C,D with) A links to B,C. B links to C. C links to A. D links to C.
+equalnumberofpages3=np.array([1/4,1/4,1/4,1/4])
+adjacentmatrix3=np.array([[0,0,1,0],[1/2,0,0,0],[1/2,1,0,1],[0,0,0,0]])
+
+def iterations3(t):
+    currentestimate3=equalnumberofpages3
+    for i in range(t):
+        currentestimate3=np.dot(adjacentmatrix3,currentestimate3)
+    return currentestimate3
+    
+print("20 iterations for 3rd question without damping",iterations3(20))
+print("40 iterations for 3rd question without damping",iterations3(40))
+eigenvalues3,eigenvectors3=np.linalg.eig(adjacentmatrix3)
+print("eigen values without damping for question 3",eigenvalues3)       
+print("eigen vectors without damping for question 3",eigenvectors3)
+#Note that the eigenvectors for eigenvalue 1 is very different from the values of 20th and 40th iterationas.
+
+E3=np.array([[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]])
+numberofpages3=4
+d3=0.85
+dampingmatrix3=np.array(((1-d3)*E3/numberofpages3)+np.dot(d3,adjacentmatrix3))
+
+def iterationwithdamping3(t):
+    currentestimatewithdamping3=equalnumberofpages3
+    for i in range(t):
+        currentestimatewithdamping3=np.dot(dampingmatrix3,currentestimatewithdamping3)
+    return currentestimatewithdamping3
+print("20 iterations for 3rd question with damping",iterationwithdamping3(20))
+print("40 iterations for 3rd question with damping",iterationwithdamping3(40))
+#Extra question answer: The damping factor effect pages with no incoming links by
+#not changing the value of the page. Notice that page D has no incoming link
+#but it's value is still 0.0375 after 20th and 40th iteration. As compared to the 
+#iteration without damping where the value of page D is 0 after 20th and 40th iteration.
+#This shows that the damping effect pages with no incoming links by keeping the value
+#same throughout the iterations.
+eigenvalueswithdamping3,eigenvectorswithdamping3=np.linalg.eig(dampingmatrix3)
+print("eigen values with damping for question 3",eigenvalueswithdamping3)
+print("eigen vectors with damping for question 3",eigenvectorswithdamping3)
+#The values of eigenvectors for eigenvalue 1 are different then the values that we had 
+#after 20 and 40 iterations with damping.
+
+
+
+
+#Questions 4 
+equalnumberofpages4=np.array([1/6,1/6,1/6,1/6,1/6,1/6])
+adjacentmatrix4=np.array([[0,1,1/4,0,0,0],[1/2,0,0,0,0,0],[1/2,0,0,0,0,0],[0,0,1/4,0,0,0],[0,0,1/4,0,0,0],[0,0,1/4,0,0,0]])
+
+def iterations4(t):
+    currentestimate4=equalnumberofpages4
+    for i in range (t):
+        currentestimate4=np.dot(adjacentmatrix4,currentestimate4)
+    return currentestimate4
+print("20 iterations for 4th question without damping", iterations4(20))
+print("40 iteratios for 4th question without damping",iterations4(40))
+eigenvalues4,eigenvectors4=np.linalg.eig(adjacentmatrix4)
+print("eigen values without damping for question 4",eigenvalues4)
+print("eigen vectors without damping for question 4",eigenvectors4)
+#I didn't get the eigenvalue 1 for question 4 so I find the eigen vectors for 
+#eigen value 0.79056942 and the numbers are very different from 20th and 40th iterations.
+#The reason that we are getting a lot of 0 for eigen values is because the matrix is 
+#invertable.
+E4=np.array([[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1]])
+numberofpages4=6
+d4=0.85
+dampingmatrix4=np.array(((1-d4)*E4/numberofpages4)+np.dot(d4,adjacentmatrix4))
+def iterationswithdamping4(t):
+    currentestimatewithdamping4=equalnumberofpages4
+    for i in range(t):
+        currentestimatewithdamping4=np.dot(dampingmatrix4,currentestimatewithdamping4)
+    return currentestimatewithdamping4
+print("20 iterations for 4th question with damping",iterationswithdamping4(20))
+print("40 iterations for 4th question with damping",iterationswithdamping4(40))
+#Extra question: The pages D,E,F have higher pageranks and we don't want that for our
+#website because the external links don't link back.
+eigenvalueswithdamping4,eigenvectorswithdamping4=np.linalg.eig(dampingmatrix4)
+print("eigen values with damping for question 4",eigenvalueswithdamping4)
+print("eigen vectors with damping for question 4",eigenvectorswithdamping4)
+#The values of eigenvectors for eigenvalue 0.79056942 are different then the values that we had 
+#after 20 and 40 iterations with damping.
+
+#Question 5
+equalnumberofpages5=np.array([1/6,1/6,1/6,1/6,1/6,1/6])
+adjacentmatrix5=np.array([[0,1,1/4,1,1,1],[1/2,0,0,0,0,0],[1/2,0,0,0,0,0],[0,0,1/4,0,0,0],[0,0,1/4,0,0,0],[0,0,1/4,0,0,0]])
+def iterations5(t):
+    currentestimate5=equalnumberofpages5
+    for i in range (t):
+        currentestimate5=np.dot(adjacentmatrix5,currentestimate5)
+    return currentestimate5
+print("20 iterations for 5th question without damping", iterations5(20))
+print("40 iterations for 5th question without damping",iterations5(40))
+eigenvalues5,eigenvectors5=np.linalg.eig(adjacentmatrix5)
+print("eigen values without damping for question 5",eigenvalues5)
+print("eigen vectors without damping for question 5",eigenvectors5)    
+#The values of eigenvectors for eigenvalue 1 are different then the values that we had 
+#after 20 and 40 iterations without damping.  
+#Extra question:The links coming from other pages increases the rank of your page which is actually a good thing.
+E5=np.array([[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1]])
+numberofpages5=6
+d5=0.85
+dampingmatrix5=np.array(((1-d5)*E5/numberofpages5)+np.dot(d5,adjacentmatrix5))
+def iterationswithdamping5(t):
+    currentestimatewithdamping5=equalnumberofpages5
+    for i in range(t):
+        currentestimatewithdamping5=np.dot(dampingmatrix5,currentestimatewithdamping5)
+    return currentestimatewithdamping5
+print("20 iterations for 5th question with damping",iterationswithdamping5(20))
+print("40 iterations for 5th question with damping",iterationswithdamping5(40))    
+eigenvalueswithdamping5,eigenvectorswithdamping5=np.linalg.eig(dampingmatrix5)
+print("eigen values with damping for question 5",eigenvalueswithdamping5)
+print("eigen vectors with damping for question 5",eigenvectorswithdamping5)
+#The values of eigenvectors for eigenvalue 1 are different then the values that we had 
+#after 20 and 40 iterations with damping.   
+
+#Question6
+equalnumberofpages6=np.array([1/4,1/4,1/4,1/4])
+adjacentmatrix6=np.array([[0,1/2,1/3,1/2],[1,0,1/3,0],[0,1/2,0,1/2],[0,0,1/3,0]])
+def iterations6(t):
+    currentestimate6=equalnumberofpages6
+    for i in range (t):
+        currentestimate6=np.dot(adjacentmatrix6,currentestimate6)
+    return currentestimate6
+print("20 iterations for 6th question without damping", iterations6(20))
+print("40 iterations for 6th question without damping",iterations6(40)) 
+#ExtraQuestion So B get the highest page rank because A link back B. We don't want this to 
+#happen because the homepage should have the highest pagerank but in this case, 
+#it's not the homepage which is getting higher pagerank.
+eigenvalues6,eigenvectors6=np.linalg.eig(adjacentmatrix6)
+print("eigen values without damping for question 6",eigenvalues6)
+print("eigen vectors without damping for question 6",eigenvectors6) 
+
+E6=np.array([[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]])
+numberofpages6=4
+d6=0.85
+dampingmatrix6=np.array(((1-d6)*E6/numberofpages6)+np.dot(d6,adjacentmatrix6))   
+def iterationswithdamping6(t):
+    currentestimatewithdamping6=equalnumberofpages6
+    for i in range(t):
+        currentestimatewithdamping6=np.dot(dampingmatrix6,currentestimatewithdamping6)
+    return currentestimatewithdamping6
+print("20 iterations for 6th question with damping",iterationswithdamping6(20))
+print("40 iterations for 6th question with damping",iterationswithdamping6(40))    
+
+eigenvalueswithdamping6,eigenvectorswithdamping6=np.linalg.eig(dampingmatrix6)
+print("eigen values with damping for question 6",eigenvalueswithdamping6)
+print("eigen vectors with damping for question 6",eigenvectorswithdamping6)
+#Notice that the values for eigen vectors are different from the iteration values.
+
+#Question7
+equalnumberofpages7=np.array([1/6,1/6,1/6,1/6,1/6,1/6])
+adjacentmatrix7=np.array([[0,1/2,1/3,1/3,1/3,1/2],[1,0,1/3,0,0,0],[0,1/2,0,1/3,0,0],[0,0,1/3,0,1/3,0],[0,0,1/3,0,0,1/2],[0,0,0,0,1/3,0]])
+def iterations7(t):
+    currentestimate7=equalnumberofpages7
+    for i in range (t):
+        currentestimate7=np.dot(adjacentmatrix7,currentestimate7)
+    return currentestimate7
+print("20 iterations for 7th question without damping", iterations7(20))
+print("40 iterations for 7th question without damping",iterations7(40))
+#Extra question:The values get more concentrated on one page when you increase the number of pages.
+eigenvalues7,eigenvectors7=np.linalg.eig(adjacentmatrix7)
+print("eigen values without damping for question 7",eigenvalues7)
+print("eigen vectors without damping for question 7",eigenvectors7) 
+
+E7=np.array([[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,1,1]])
+numberofpages7=6
+d7=0.85
+dampingmatrix7=np.array(((1-d7)*E7/numberofpages7)+np.dot(d7,adjacentmatrix7))
+def iterationswithdamping7(t):
+    currentestimatewithdamping7=equalnumberofpages7
+    for i in range(t):
+        currentestimatewithdamping7=np.dot(dampingmatrix7,currentestimatewithdamping7)
+    return currentestimatewithdamping7
+print("20 iterations for 7th question with damping",iterationswithdamping7(20))
+print("40 iterations for 7th question with damping",iterationswithdamping7(40))
+
+eigenvalueswithdamping7,eigenvectorswithdamping7=np.linalg.eig(dampingmatrix7)
+print("eigen values with damping for question 7",eigenvalueswithdamping7)
+print("eigen vectors with damping for question 7",eigenvectorswithdamping7)
+#Notice that the values for eigen vectors are pretty much similar to the values that
+#we had after running 20th and 40th iterations.
